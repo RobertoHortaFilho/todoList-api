@@ -12,16 +12,26 @@ const db = function (){
         noteModel = await connectionNotes.model('note',noteSchema)
     }
 
-
-
     async function findAll(){
         const data = await noteModel.find()
         return data
     }
+
+    async function create(obj){
+        try {
+            await noteModel.create(obj)
+            return true
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
     
     return {
         connect,
-        findAll}
+        findAll,
+        create,
+    }
 
 }
 

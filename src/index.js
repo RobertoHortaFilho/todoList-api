@@ -4,15 +4,15 @@ require('dotenv').config();
 
 const DbNoteFactory = require('./Db/DbNotes')
 DbNoteFactory.connect()
-
+const DbUserFactory = require('./Db/DbUsers')
+DbUserFactory.connect()
 
 
 const app = express();
 
 
 app.get('/', async (req,res) =>{
-    console.log(await DbNoteFactory.findAll())
-    res.send('ola')
+    res.send('api todoList')
 })
 
 

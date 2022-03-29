@@ -11,6 +11,8 @@ function db (){
     async function connect (){
         const connectionUsers = await mongoose.createConnection(link)
         userModel = connectionUsers.model('user',userSchema)
+
+        
     }
 
     async function findAll(){
@@ -21,9 +23,20 @@ function db (){
         return users
     }
 
+    async function create(obj){
+        try {
+            await userModel.create(obj)
+            return true
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
     return {
         connect,
         findAll,
+        create,
     }
 }
 
