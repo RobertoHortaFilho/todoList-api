@@ -1,15 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 require('dotenv').config();
 
 
-const DbNoteFactory = require('./Db/DbNotes')
-DbNoteFactory.connect()
 const DbUserFactory = require('./Db/DbUsers')
 DbUserFactory.connect()
 
+const notesRoutes = require('./routes/notes')
 
-const app = express();
+//configs
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+app.use(express.static('./static'))
 
+
+app.use('/notes',notesRoutes)
 
 app.get('/', async (req,res) =>{
     res.send('api todoList')
