@@ -9,9 +9,9 @@ routes.get('/:userId', async (req, res) =>{
     const userId = req.params.userId
     try {
         const notes = await DbNoteFactory.findAll(userId)
-        res.status(200).json(notes)
+        res.status(200).json({notes,response:true})
     } catch (error) {
-        res.status(500).json(error)    
+        res.status(500).json({error,response:false})    
     }
     
 })
@@ -20,9 +20,9 @@ routes.get('/search/:id', async (req,res) =>{
     const id = req.params.id
     try {
         const note = await DbNoteFactory.find(id)
-        res.status(200).json(note)
+        res.status(200).json({note,response:true})
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({error,response:false})
     }
 })
 
@@ -31,7 +31,7 @@ routes.get('/search/:id', async (req,res) =>{
 routes.post('/', async (req,res) =>{ 
     const {userId , title, content} = req.body
     if(!verifyOk(userId, title, content)){
-        res.status(500).json({error:'user id invalido'})
+        res.status(500).json({error:'user id invalido',response:false})
         return    
     }
     const note = {userId,title,content}
@@ -39,13 +39,13 @@ routes.post('/', async (req,res) =>{
     try {
         const resposta = await DbNoteFactory.create(note)
         if (resposta){
-            res.status(201).json({message:'created'})
+            res.status(201).json({message:'created',response:true})
         }else{
-            res.status(500).json({message:'error note not created'})
+            res.status(500).json({message:'error note not created',response:false})
         }
         
     } catch (error) {
-        res.status(500).json({error})
+        res.status(500).json({error,response:false})
     }
 })
 
@@ -58,15 +58,15 @@ routes.patch('/:id', async (req, res) =>{
     const updated =  Date.now()
     const obj = {userId,title,content,updated}
     if(!verifyOk(userId, title, content)){
-        res.status(500).json({error:'user title or content is undefined'})
+        res.status(500).json({error:'user title or content is undefined',response:false})
         return
     }
 
     const resposta = await DbNoteFactory.update(id,obj)
     if (resposta){
-        res.status(206).json({message:'updated'})
+        res.status(206).json({message:'updated',response:true})
     }else{
-        res.status(500).json({error:'error'})
+        res.status(500).json({error:'error',response:false})
     }
 })
 
@@ -75,15 +75,15 @@ routes.patch('/:id', async (req, res) =>{
 routes.delete('/:id', async (req, res) =>{
     const id = req.params.id;
     if (id == undefined){
-        res.status(500).json({error:'miss note ID'})
+        res.status(500).json({error:'miss note ID',response:false})
         return
     }
 
     if(await DbNoteFactory.del(id)){
-        res.status(200).json({message:'note deleted in DB'})
+        res.status(200).json({message:'note deleted in DB',response:true})
         return
     }
-    res.status(500).json({error:'note note deleted'})
+    res.status(500).json({error:'note not deleted',response:false})
 })
 
 
