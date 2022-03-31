@@ -13,28 +13,7 @@ routes.post('/signup', async (req, res) =>{
 
     try{
         await DbUserFactory.create(obj)
-        const transporter = nodemailer.createTransport({
-            service :'gmail',
-            auth: {
-                user: 'todolistverify@gmail.com',
-                pass: 'todolistpassword'
-            }
-
-        })
-        const  mailOptions = {
-            from : 'todoListVerify@gmail.com',
-            to : 'roberto54454e@gmail.com',
-            subject: 'verifique o email (ToDo List)',
-            text: ' clique aqui para verificar o email'
-        }
-
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
+        
 
         res.status(201).json({message:'create accont success pls verify',response:true})
     }catch(error){
