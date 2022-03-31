@@ -8,6 +8,7 @@ const DbUserFactory = require('./Db/DbUsers')
 DbUserFactory.connect()
 
 const notesRoutes = require('./routes/notes')
+const userRoutes = require('./routes/users')
 
 //configs
 app.use(express.urlencoded({extended:true}))
@@ -16,10 +17,16 @@ app.use(express.static('./static'))
 
 
 app.use('/notes',notesRoutes)
+app.use('/users' ,userRoutes)
+
+
+
 
 app.get('/', async (req,res) =>{
     res.send('api todoList')
 })
+
+
 
 
 const PORT = process.env.PORT || 3000
