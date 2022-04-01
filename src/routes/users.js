@@ -15,8 +15,8 @@ routes.post('/signup', async (req, res) =>{
     try{
         await DbUserFactory.create(obj)
         const hash = DbUserFactory.hashCreate(email)
-        const fullUrl = req.protocol + '://' + req.get('host')
-        mail.send(email, hash, fullUrl)
+        //const fullUrl = req.protocol + '://' + req.get('host')
+        //mail.send(email, hash, fullUrl)
         
 
 
@@ -37,6 +37,7 @@ routes.get(('/verify/:hash'), async (req,res) =>{
         const user = await DbUserFactory.findOne({email:hashObj.email})
         //console.log(user['_id'])
         await DbUserFactory.update(user['_id'],{approved:true})
+        await DbUserFactory.hashDel(hash)
         res.status(200).json({response:true})
         return 
     }
