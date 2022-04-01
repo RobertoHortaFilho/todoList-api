@@ -17,7 +17,7 @@ const mail = function(){
     }
 
     function createBody(email, hash, fullUrl){
-        const url = fullUrl + '/users/verify/' + email + '/' + hash 
+        const url = fullUrl + '/users/verify/' + hash 
         const mailOptions = {
                 from: user,
                 to: email,
