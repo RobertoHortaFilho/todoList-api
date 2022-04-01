@@ -20,7 +20,7 @@ const mail = function(){
         const url = fullUrl + '/users/verify/' + email + '/' + hash 
         const mailOptions = {
                 from: user,
-                to: 'roberto54454e@gmail.com',
+                to: email,
                 subject: 'verifique o email (ToDo List)',
                 text: `clique aqui link com o hash mt foda ${url}`
         }
