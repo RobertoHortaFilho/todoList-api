@@ -4,11 +4,11 @@ const app = express();
 require('dotenv').config();
 
 
-const DbUserFactory = require('./Db/DbUsers')
+const DbUserFactory = require('./src/Db/DbUsers')
 DbUserFactory.connect()
 
-const notesRoutes = require('./routes/notes')
-const userRoutes = require('./routes/users')
+const notesRoutes = require('./src/routes/notes')
+const userRoutes = require('./src/routes/users')
 
 //configs
 app.use(express.urlencoded({extended:true}))
@@ -29,5 +29,5 @@ app.get('/', async (req,res) =>{
 
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3030
 app.listen(PORT, console.log('listen on port ' + PORT))
