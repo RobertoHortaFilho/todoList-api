@@ -60,17 +60,44 @@ function db (){
     }
 
     //hash
-    async function hashCreate(){
+     function hashCreate(email){
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVXWYZabcdefghijklmnopqrstuvxwyz1234567890'
+        var hash = ''
+        const charLength = characters.length;
 
+        for(var i = 0; i < 30;i++){
+            hash = hash + characters.charAt(Math.floor(Math.random()*charLength))
+        }
         const dateExpire = new Date()
         dateExpire.setMinutes(dateExpire.getMinutes()+ 30)
         const obj = {
-            email:'email',
-            hash: '123',
+            email:email,
+            hash: hash,
             expire: dateExpire
         }
+        insertHashDb(obj)
+        return hash
+        
+    }
 
+    async function insertHashDb(obj){
         await hashModel.create(obj)
+        return
+    }
+
+    async function hashFind(obj){
+        const hashData = await hashModel.findOne(obj)
+        return hashData
+
+    }
+
+    async function hashDel(hash){
+        if(await hashModel.deleteOne({hash:hash})){
+            return true
+        }else{
+            return false
+        }
+        
     }
 
     return {
@@ -80,6 +107,8 @@ function db (){
         del,
         update,
         hashCreate,
+        hashFind,
+        hashDel
     }
 }
 

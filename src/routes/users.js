@@ -1,7 +1,8 @@
 const routes = require('express').Router();
+const mail = require('../emailVerification')
 const DbUserFactory = require('../Db/DbUsers')
 DbUserFactory.connect()
-const nodemailer = require('nodemailer')
+
 
 //create
 routes.post('/signup', async (req, res) =>{
@@ -13,12 +14,34 @@ routes.post('/signup', async (req, res) =>{
 
     try{
         await DbUserFactory.create(obj)
+        const hash = DbUserFactory.hashCreate()
+        const fullUrl = req.protocol + '://' + req.get('host')
+        mail.send(email, hash, fullUrl)
         
+
 
         res.status(201).json({message:'create accont success pls verify',response:true})
     }catch(error){
         res.status(500).json({error: error,response:false})
     }
+})
+
+routes.get(('/verify/:email/:hash'), async (req,res) =>{
+    console.log('verificando')
+    const email = req.params.email
+    const hash = req.params.hash
+
+    const hashObj = await DbUserFactory.hashFind({hash:hash})
+    
+    if(hashObj.hash === hash){
+        // email verificado
+        const user = await DbUserFactory.findOne({email:email})
+        console.log(email)
+        console.log(user['_id'])
+        await DbUserFactory.update(user['_id'],{approved:true})
+    }
+
+    res.status(200).send('<h1>email confirmado</h1>')
 })
 
 routes.post('/login', async (req, res) =>{
@@ -36,7 +59,6 @@ routes.post('/login', async (req, res) =>{
 
 //read
 routes.get('/email/:email', async(req, res) =>{
-    await DbUserFactory.hashCreate()
     const email = req.params.email
     const user = await DbUserFactory.findOne({email:email})
     
