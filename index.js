@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 require('dotenv').config();
 
@@ -11,6 +12,7 @@ const notesRoutes = require('./src/routes/notes')
 const userRoutes = require('./src/routes/users')
 
 //configs
+app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(express.static('./static'))
