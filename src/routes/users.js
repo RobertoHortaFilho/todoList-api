@@ -51,13 +51,13 @@ routes.post('/login', async (req, res) =>{
 
     const user = await DbUserFactory.findOne({email:email})
     if (user == null){
-        res.status(200).json({message:'access denied',response:true})
+        res.status(200).json({message:'access denied',response:false})
         return
     }    
     if (user.email === email && user.password === password){
         res.status(200).json({message:'ok',user,response:true})
     }else{
-        res.status(200).json({message:'access denied',response:true})
+        res.status(200).json({message:'access denied',response:false})
     }
     
 })
