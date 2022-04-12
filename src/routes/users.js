@@ -46,11 +46,14 @@ routes.get(('/verify/:hash'), async (req,res) =>{
     
 })
 
-routes.get('/login', async (req, res) =>{
+routes.post('/login', async (req, res) =>{
     const {email, password} = req.body
 
     const user = await DbUserFactory.findOne({email:email})
-
+    if (user == null){
+        res.status(200).json({message:'access denied',response:true})
+        return
+    }    
     if (user.email === email && user.password === password){
         res.status(200).json({message:'ok',user,response:true})
     }else{
