@@ -46,7 +46,7 @@ routes.get(('/verify/:hash'), async (req,res) =>{
     
 })
 
-routes.post('/login', async (req, res) =>{
+routes.get('/login', async (req, res) =>{
     const {email, password} = req.body
 
     const user = await DbUserFactory.findOne({email:email})
